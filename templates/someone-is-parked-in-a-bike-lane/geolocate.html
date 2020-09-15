@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+
+<button id = "find-me" onclick="getLocation()">Show my location</button><br/>
+<p id = "status"></p>
+<a id = "map-link" target="_blank"></a>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script>
+
+    let latitude;
+    let longitude;
+
+    let postcode;
+    let street_name;
+    let council_name;
+    let city_name;
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(storePosition);
+        } else {
+            window.alert ("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function storePosition(position) {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        parsePosition()
+    }
+
+    function getData() {
+        let lookup_endpoint = "https://api.postcodes.io/postcodes?lon=" + longitude + "&lat=" + latitude
+	    window.alert(lookup_endpoint)
+
+        $.getJSON(lookup_endpoint, function( json ) {
+            window.alert (json.result [ 1 ].postcode );
+            postcode = json.result[ 1 ].postcode ;
+            console.log( "JSON Data: " + json.result[ 1 ].postcode );
+        });
+
+        return false;
+    }
+
+    function parsePosition() {
+        getData()
+	    window.alert("Outside: " + postcode);
+    }
+
+</script>
+
+</body>
+</html>
