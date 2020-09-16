@@ -1,0 +1,120 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="container" style="align-content: center">
+
+	<div class="card text-left">
+
+		<div class="card-header">
+			<ul class="nav nav-pills card-header-pills">
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#">What happened?</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#">Details?</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="#">Where?</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#">Photos?</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#">Submit</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="card-body">
+			<h2 class="card-title text-center mt-2 mb-5">Where was this?</h2>
+
+			<div class="text-center">
+				<button class="btn btn-primary align-center mb-5" id="find-me" onclick="getLocation()"><i class="fas fa-location-arrow"></i> Locate</button>
+				<span id="found-notice text-center" class="invalid-feedback"></span>
+			</div>
+
+			<form>
+				<div class="form-group">
+					<label for="formGroupExampleInput">Road name</label>
+					<input type="text" class="form-control" id="road-name" placeholder="Porchester Road" required>
+					<span id="road-name-feedback" class="invalid-feedback"></span>
+				</div>
+				<div class="form-group">
+					<label for="formGroupExampleInput">City</label>
+					<input type="text" class="form-control" id="city-name" placeholder="London" required>
+				</div>
+				<div class="form-group">
+					<label for="formGroupExampleInput">Post code (if you know it)</label>
+					<input type="text" class="form-control" id="postcode" placeholder="W2 5HS">
+				</div>
+				<div class="form-group">
+					<label for="formGroupExampleInput">Council (if you know it)</label>
+					<input type="text" class="form-control" id="council-name" placeholder="Westminster">
+				</div>
+
+				<div class="text-right">
+					<button type="submit" class="btn btn-primary mt-3">Next</button>
+				</div>
+
+			</form>
+
+		</div>
+	</div>
+
+	<script>
+
+        let latitude;
+        let longitude;
+
+        let postcode;
+        let street_name;
+        let council_name;
+        let city_name;
+
+        function getLocation() {
+            $("#find-me").html('<i class=\"fas fa-spinner fa-pulse\"></i> Looking...');
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(storePosition);
+            } else {
+                window.alert ("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function storePosition(position) {
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            parsePosition()
+        }
+
+        function getData() {
+            let lookup_endpoint = "https://api.postcodes.io/postcodes?lon=" + longitude + "&lat=" + latitude
+
+            $.getJSON(lookup_endpoint, function( json ) {
+                postcode = json.result[ 1 ].postcode;
+                council_name = json.result[ 1 ].admin_district;
+                city_name = json.result [ 1 ].region;
+
+                document.getElementById("postcode").value = postcode;
+                document.getElementById("council-name").value = council_name;
+                document.getElementById("city-name").value = city_name;
+
+                $("#find-me").html('<i class=\"fas fa-check-circle\"></i> Found...');
+                $("#found-notice").html("... but you need to put in your own streetname")
+
+                $("#road-name").addClass("is-invalid");
+                $("#road-name-feedback").html("Really weirdly, in the UK street names are not publicly available for free by postcode, so you need to type this manually - <a href=''>learn more</a>")
+
+
+            });
+
+            return false;
+        }
+
+        function parsePosition() {
+            getData()
+        }
+
+	</script>
+
+{% endblock %}

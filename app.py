@@ -100,7 +100,7 @@ def upload_file(report_id = None):
 
 @app.route('/')
 def index():
-    return render_template('step-1.html')
+    return render_template('what-happened.html')
 
 
 @app.route('/someone-is-in-danger')
@@ -110,7 +110,7 @@ def someone_is_in_danger():
 
 @app.route('/someone-is-parked-in-a-bike-lane/step-2')
 def someone_is_parked_in_a_bike_lane():
-    return render_template('someone-is-parked-in-a-bike-lane/step-2.html')
+    return render_template('someone-is-parked-in-a-bike-lane/details.html')
 
 
 @app.route('/geolocate')
