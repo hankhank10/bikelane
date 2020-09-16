@@ -28,37 +28,37 @@
 		<div class="card-body">
 			<h2 class="card-title text-center mt-2 mb-5">That sucks. Give us the details.</h2>
 
-			<form>
+			<form action="#" method="post">
 				<div class="form-group">
 					<label for="company-name">Company</label>
-					<select id="company-name" class="custom-select">
-						<option value="1">Bad Courier PLC</option>
-						<option value="2">Bad Trucking Company</option>
-						<option value="3">Not listed</option>
+					<select name="company-name" id="company-name" class="custom-select" required>
+						<option value="Bad Courier PLC">Bad Courier PLC</option>
+						<option value="Bad Trucking PLC">Bad Trucking Company</option>
+						<option value="Not listed">Not listed</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<label for="registration-number">Registration number</label>
-					<input type="text" class="form-control" id="registration-number" placeholder="B4D PRK1NG" required>
+					<input name="registration-number" type="text" class="form-control" id="registration-number" placeholder="B4D PRK1NG" required>
 				</div>
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="form-group">
-							<label for="vehicle-colour">Vehicle colour</label>
-							<input type="text" class="form-control" id="vehicle-colour" placeholder="White" required>
+							<label for="vehicle-colour">Vehicle colour (optional)</label>
+							<input name="vehicle-colour" type="text" class="form-control" id="vehicle-colour" placeholder="White">
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="form-group">
-							<label for="vehicle-brand">Vehicle brand and model</label>
-							<input type="text" class="form-control" id="vehicle-brand" placeholder="Ford Transit" required>
+							<label for="vehicle-brand">Vehicle brand and model (optional)</label>
+							<input name="vehicle-brand" type="text" class="form-control" id="vehicle-brand" placeholder="Ford Transit">
 						</div>
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="details-body">Any details to add?</label>
-					<textarea id="details-body" class="form-control" rows="3" placeholder="Tell us what happened. Just the facts." required></textarea>
+					<textarea name="details-body" id="details-body" class="form-control" rows="3" placeholder="Tell us what happened. Just the facts." required></textarea>
 				</div>
 
 				<div class="text-right">

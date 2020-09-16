@@ -108,16 +108,29 @@ def someone_is_in_danger():
     return render_template('someone-is-in-danger.html')
 
 
-@app.route('/someone-is-parked-in-a-bike-lane/step-2')
+@app.route('/someone-is-parked-in-a-bike-lane/details', methods=['GET', 'POST'])
 def someone_is_parked_in_a_bike_lane():
-    return render_template('someone-is-parked-in-a-bike-lane/details.html')
+
+    if request.method == 'GET':
+        return render_template('someone-is-parked-in-a-bike-lane/details.html')
+
+    if request.method == 'POST':
+        # Get input from forms and put into vars
+        company_name = request.form.get('company-name')
+        registration_number = request.form.get('registration-number')
+        vehicle_colour = request.form.get('vehicle-colour')
+        vehicle_brand = request.form.get('vehicle-brand')
+        details_body = request.form['details-body']
+
+        print(company_name)
+        print(registration_number)
+        print(vehicle_colour)
+        print(vehicle_brand)
+        print(details_body)
+        return "OK"
 
 
-@app.route('/geolocate')
-def geolocate():
-    return render_template('someone-is-parked-in-a-bike-lane/geolocate.html')
-
-@app.route('/uploads/<filename>')
+@app.route('/view_image/<filename>')
 def view_image(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
