@@ -1,0 +1,12 @@
+{
+  "Example plc": {
+      "contact_method": "email",
+      "email_address": "email@email.com"
+  },
+  "Another Example LTD": {
+      "contact_method": "email",
+      "email_address": "email@adifferentemail.com"
+  }
+}
+
+
