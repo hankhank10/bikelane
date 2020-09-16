@@ -5,6 +5,7 @@ from pathlib import Path
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+import secretstuff
 
 
 # Define flask variables
@@ -13,7 +14,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = b'ineverreallyunderstoodwhatsecretkeysareforanyway'
+app.secret_key = secretstuff.secret_key
 website_url = "http://localhost:5000/"
 
 # DB initialisation
@@ -207,7 +208,7 @@ def bike_lane_where(report_unique_id):
 
         db.session.commit()
 
-        return redirect(url_for('bike_lane_photos', report_unique_id=report_unique_id))
+        return redirect(url_for('bike_lane_photos'))
 
 
 @app.route('/someone-is-parked-in-a-bike-lane/photos/<report_unique_id>', methods=['GET', 'POST'])
@@ -220,7 +221,7 @@ def bike_lane_photos(report_unique_id):
         return report_status
 
     if request.method == 'GET':
-        return render_template('generic/upload-photos.html', report_unique_id=report_unique_id)
+        return render_template('generic/upload-photos.html')
 
     if request.method == 'POST':
         return "POST?"  ##START HERE TOMORROW
