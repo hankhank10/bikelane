@@ -19,3 +19,4 @@ static/uploads/dd3c0f57b9a28afc766c2ada493a2818.png
 *.png
 *.pyc
 db.sqlite
+actions/.DS_Store
