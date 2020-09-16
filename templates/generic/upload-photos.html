@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<style>
+	.dropzone {
+		background: white;
+		border-radius: 5px;
+		border: 2px dashed rgb(0, 135, 247);
+		border-image: none;
+		max-width: 650px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>
+
+<div class="container" style="align-content: center">
+
+	<div class="card text-left">
+
+		<div class="card-header">
+			<ul class="nav nav-pills card-header-pills">
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#">What happened?</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#">Details?</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#">Where?</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" href="#">Photos?</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#">Submit</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="card-body">
+			<h2 class="card-title text-center mt-2 mb-5">Upload your photos</h2>
+
+            <form action="{{ url_for('upload_file', report_unique_id=report_unique_id) }}" class="dropzone" id="my-awesome-dropzone">
+            </form>
+
+			<form action="#" method="post">
+				<div class="text-right">
+					<button type="submit" id="next-button" class="btn btn-primary mt-3" disabled>Next</button>
+				</div>
+			</form>
+
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.js"></script>
+
+			<script>
+                Dropzone.options.myAwesomeDropzone = {
+                    init: function() {
+                        this.on("addedfile", function(file) { document.getElementById("next-button").disabled = false; });
+                    }
+                };
+			</script>
+
+		</div>
+	</div>
+
+{% endblock %}

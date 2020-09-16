@@ -28,7 +28,7 @@ migrate = Migrate(app, db)
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image_filename = db.Column(db.String)
-    report_id = db.Column(db.Integer)
+    report_unique_id = db.Column(db.Integer)
 
     def image_url(self):
         return website_url + "static/uploads/" + self.image_filename
@@ -54,18 +54,13 @@ class Report(db.Model):
         return website_url + "report/" + self.report_unique_id
 
 
-# Helper functions
+# Functions to actually deal with uploading and serving images
 
-
-
-
-# File uploads
-
-@app.route('/upload_file/to/<report_id>', methods=['POST'])
-def upload_file(report_id = None):
+@app.route('/upload_file/to/<report_unique_id>', methods=['POST'])
+def upload_file(report_unique_id = None):
 
     # check if report ID provided
-    if report_id is None:
+    if report_unique_id is None:
         flash ("No associated report ID")
         return redirect(request.url)
 
@@ -90,7 +85,7 @@ def upload_file(report_id = None):
         # insert code here to create image record
         new_image = Image(
             image_filename = filename,
-            report_id = report_id
+            report_unique_id = report_unique_id
         )
 
         db.session.add(new_image)
@@ -115,6 +110,22 @@ def view_image(filename):
 @app.route('/someone-is-in-danger')
 def someone_is_in_danger():
     return render_template('someone-is-in-danger.html')
+
+
+# Helper functions (DRY, amirite?)
+
+def report_unique_id_status(report_unique_id):
+
+    # Check it is not None
+    if report_unique_id is None:
+        return ("No unique report ID provided")
+
+    # ... and check that it exists
+    report_count = Report.query.filter_by(report_unique_id=report_unique_id).count()
+    if report_count == 0:
+        return ("No record found with unique_id = " + report_unique_id)
+
+    return "valid"
 
 
 # START: BIKE LANE ENDPOINTS
@@ -159,16 +170,11 @@ def bike_lane_details():
 @app.route('/someone-is-parked-in-a-bike-lane/where/<report_unique_id>', methods=['GET', 'POST'])
 def bike_lane_where(report_unique_id):
 
-    # Check that a unique ID was provided ...
-    if report_unique_id is None:
-        flash ("No unique report ID provided")
-        return ("No unique report ID provided")
-
-    # ... and check that it exists
-    report_count = Report.query.filter_by(report_unique_id=report_unique_id).count()
-    if report_count == 0:
-        flash ("No record found with unique_id = " + report_unique_id)
-        return ("No record found with unique_id = " + report_unique_id)
+    # Check the unique_id provided is valid, return error if not
+    report_status = report_unique_id_status(report_unique_id)
+    if report_status != "valid":
+        flash (report_status)
+        return report_status
 
     if request.method == 'GET':
         return render_template('someone-is-parked-in-a-bike-lane/where.html', report_unique_id=report_unique_id)
@@ -201,9 +207,23 @@ def bike_lane_where(report_unique_id):
 
         db.session.commit()
 
-        return "OK"
+        return redirect(url_for('bike_lane_photos', report_unique_id=report_unique_id))
 
 
+@app.route('/someone-is-parked-in-a-bike-lane/photos/<report_unique_id>', methods=['GET', 'POST'])
+def bike_lane_photos(report_unique_id):
+
+    # Check the unique_id provided is valid, return error if not
+    report_status = report_unique_id_status(report_unique_id)
+    if report_status != "valid":
+        flash (report_status)
+        return report_status
+
+    if request.method == 'GET':
+        return render_template('generic/upload-photos.html', report_unique_id=report_unique_id)
+
+    if request.method == 'POST':
+        return "POST?"
 
 # END: BIKE LANE ENDPOINTS
 

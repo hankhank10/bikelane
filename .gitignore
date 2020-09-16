@@ -16,3 +16,6 @@ migrations/versions/4772dea54f84_.py
 migrations/versions/__pycache__/4772dea54f84_.cpython-38.pyc
 static/uploads/72b4524aaad415479f81de8f9c07a49f.png
 static/uploads/dd3c0f57b9a28afc766c2ada493a2818.png
+*.png
+*.pyc
+db.sqlite
