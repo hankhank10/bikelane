@@ -36,12 +36,16 @@ class Image(db.Model):
 class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     reason_for_report = db.Column(db.String)
+    company_name = db.Column(db.String)
+    registration_number = db.Column(db.String, 20)
+    vehicle_colour = db.Column(db.String)
+    vehicle_brand = db.Column(db.String)
+    details_body = db.Column(db.String)
     location_address = db.Column(db.String)
     location_postcode = db.Column(db.String)
     location_lat = db.Column(db.Integer)
     location_long = db.Column(db.Integer)
     reporter_email = db.Column(db.String)
-    business_name = db.Column(db.String)
     council_name = db.Column(db.String)
     report_unique_id = db.Column(db.String)
 
@@ -122,12 +126,22 @@ def someone_is_parked_in_a_bike_lane():
         vehicle_brand = request.form.get('vehicle-brand')
         details_body = request.form['details-body']
 
-        print(company_name)
-        print(registration_number)
-        print(vehicle_colour)
-        print(vehicle_brand)
-        print(details_body)
-        return "OK"
+        # Create new record
+
+        new_report = Report(
+            # id is set automatically
+            report_unique_id = secrets.token_hex(5),
+            reason_for_report = "Parking in a bike lane",
+            company_name = company_name,
+            registration_number = registration_number,
+            vehicle_colour = vehicle_colour,
+            vehicle_brand = vehicle_brand,
+        )
+
+        db.session.add(new_report)
+        db.session.commit()
+
+        return render_template()
 
 
 @app.route('/view_image/<filename>')
