@@ -13,6 +13,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = b'ineverreallyunderstoodwhatsecretkeysareforanyway'
 website_url = "http://localhost:5000/"
 
 # DB initialisation
@@ -23,7 +24,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 
-# DB models
+# Define DB models
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image_filename = db.Column(db.String)
@@ -37,15 +38,15 @@ class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     reason_for_report = db.Column(db.String)
     company_name = db.Column(db.String)
-    registration_number = db.Column(db.String, 20)
+    registration_number = db.Column(db.String)
     vehicle_colour = db.Column(db.String)
     vehicle_brand = db.Column(db.String)
     details_body = db.Column(db.String)
-    location_address = db.Column(db.String)
+    location_road_name = db.Column(db.String)
     location_postcode = db.Column(db.String)
-    location_lat = db.Column(db.Integer)
-    location_long = db.Column(db.Integer)
-    reporter_email = db.Column(db.String)
+    location_city_name = db.Column(db.String)
+    location_latitude = db.Column(db.Integer)
+    location_longitude = db.Column(db.Integer)
     council_name = db.Column(db.String)
     report_unique_id = db.Column(db.String)
 
@@ -53,14 +54,12 @@ class Report(db.Model):
         return website_url + "report/" + self.report_unique_id
 
 
-# Helpers
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+# Helper functions
 
 
-# Endpoints
+
+
+# File uploads
 
 @app.route('/upload_file/to/<report_id>', methods=['POST'])
 def upload_file(report_id = None):
@@ -102,18 +101,25 @@ def upload_file(report_id = None):
         return filename
 
 
-@app.route('/')
-def index():
-    return render_template('what-happened.html')
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+@app.route('/view_image/<filename>')
+def view_image(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+# Above my pay grade...
 @app.route('/someone-is-in-danger')
 def someone_is_in_danger():
     return render_template('someone-is-in-danger.html')
 
 
+# START: BIKE LANE ENDPOINTS
 @app.route('/someone-is-parked-in-a-bike-lane/details', methods=['GET', 'POST'])
-def someone_is_parked_in_a_bike_lane():
+def bike_lane_details():
 
     if request.method == 'GET':
         return render_template('someone-is-parked-in-a-bike-lane/details.html')
@@ -124,29 +130,89 @@ def someone_is_parked_in_a_bike_lane():
         registration_number = request.form.get('registration-number')
         vehicle_colour = request.form.get('vehicle-colour')
         vehicle_brand = request.form.get('vehicle-brand')
-        details_body = request.form['details-body']
+        details_body = request.form.get('details-body')
+
+        # Do some basic error checking, proceed if all ok
+        if company_name is None or registration_number is None:
+            flash ("You need to provide basic details")
+            return redirect(request.url)
 
         # Create new record
-
+        report_unique_id = secrets.token_hex(5)
         new_report = Report(
             # id is set automatically
-            report_unique_id = secrets.token_hex(5),
+            report_unique_id = report_unique_id,
             reason_for_report = "Parking in a bike lane",
             company_name = company_name,
             registration_number = registration_number,
             vehicle_colour = vehicle_colour,
             vehicle_brand = vehicle_brand,
+            details_body = details_body
         )
 
         db.session.add(new_report)
         db.session.commit()
 
-        return render_template()
+        return redirect(url_for('bike_lane_where', report_unique_id=report_unique_id))
 
 
-@app.route('/view_image/<filename>')
-def view_image(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+@app.route('/someone-is-parked-in-a-bike-lane/where/<report_unique_id>', methods=['GET', 'POST'])
+def bike_lane_where(report_unique_id):
+
+    # Check that a unique ID was provided ...
+    if report_unique_id is None:
+        flash ("No unique report ID provided")
+        return ("No unique report ID provided")
+
+    # ... and check that it exists
+    report_count = Report.query.filter_by(report_unique_id=report_unique_id).count()
+    if report_count == 0:
+        flash ("No record found with unique_id = " + report_unique_id)
+        return ("No record found with unique_id = " + report_unique_id)
+
+    if request.method == 'GET':
+        return render_template('someone-is-parked-in-a-bike-lane/where.html', report_unique_id=report_unique_id)
+
+    if request.method == 'POST':
+        # Get the data from the form
+        road_name = request.form.get('road-name')
+        city_name = request.form.get('city-name')
+        postcode = request.form.get('postcode')
+        council_name = request.form.get('council-name')
+        latitude = request.form.get('latitude')
+        longitude = request.form.get('longitude')
+
+        # Check basic details provided
+        if road_name is None or city_name is None:
+            flash("You need to provide basic details")
+            return redirect(request.url)
+
+        # Load the report from the DB
+        report = Report.query.filter_by(report_unique_id=report_unique_id).first()
+
+        # Add the new fields
+        report.location_road_name = road_name
+        report.location_city_name = city_name
+        if postcode is not None: report.location_postcode = postcode
+        if council_name is not None: report.council_name = council_name
+        if latitude is not None and longitude is not None:
+            report.location_latitude = latitude
+            report.location_longitude = longitude
+
+        db.session.commit()
+
+        return "OK"
+
+
+
+# END: BIKE LANE ENDPOINTS
+
+
+# The main event...
+
+@app.route('/')
+def index():
+    return render_template('what-happened.html')
 
 
 if __name__ == '__main__':

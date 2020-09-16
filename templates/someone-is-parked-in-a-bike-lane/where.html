@@ -33,24 +33,27 @@
 				<span id="found-notice text-center" class="invalid-feedback"></span>
 			</div>
 
-			<form>
+			<form action="#" method="post">
 				<div class="form-group">
 					<label for="formGroupExampleInput">Road name</label>
-					<input type="text" class="form-control" id="road-name" placeholder="Porchester Road" required>
+					<input type="text" class="form-control" id="road-name" name="road-name" placeholder="Porchester Road" required>
 					<span id="road-name-feedback" class="invalid-feedback"></span>
 				</div>
 				<div class="form-group">
 					<label for="formGroupExampleInput">City</label>
-					<input type="text" class="form-control" id="city-name" placeholder="London" required>
+					<input type="text" class="form-control" id="city-name" name="city-name" placeholder="London" required>
 				</div>
 				<div class="form-group">
 					<label for="formGroupExampleInput">Post code (if you know it)</label>
-					<input type="text" class="form-control" id="postcode" placeholder="W2 5HS">
+					<input type="text" class="form-control" id="postcode" name="postcode" placeholder="W2 5HS">
 				</div>
 				<div class="form-group">
 					<label for="formGroupExampleInput">Council (if you know it)</label>
-					<input type="text" class="form-control" id="council-name" placeholder="Westminster">
+					<input type="text" class="form-control" id="council-name" name="council-name" placeholder="Westminster">
 				</div>
+
+				<input type="hidden" class="form-control" id="latitude" name="latitude">
+				<input type="hidden" class="form-control" id="longitude" name="longitude">
 
 				<div class="text-right">
 					<button type="submit" class="btn btn-primary mt-3">Next</button>
@@ -98,6 +101,9 @@
                 document.getElementById("postcode").value = postcode;
                 document.getElementById("council-name").value = council_name;
                 document.getElementById("city-name").value = city_name;
+                document.getElementById("latitude").value = latitude;
+                document.getElementById("longitude").value = longitude;
+
 
                 $("#find-me").html('<i class=\"fas fa-check-circle\"></i> Found...');
                 $("#found-notice").html("... but you need to put in your own streetname")
