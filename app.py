@@ -50,8 +50,10 @@ class Report(db.Model):
     location_city_name = db.Column(db.String)
     location_latitude = db.Column(db.Integer)
     location_longitude = db.Column(db.Integer)
+    when_did_this_happen = db.Column(db.String)
     council_name = db.Column(db.String)
     report_unique_id = db.Column(db.String)
+    timestamp = db.Column(db.DateTime)
 
     def report_unique_url(self):
         return website_url + "report/" + self.report_unique_id
