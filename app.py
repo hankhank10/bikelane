@@ -7,6 +7,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import secretstuff
 
+import jsonhandler
+
 
 # Define flask variables
 UPLOAD_FOLDER = 'static/uploads'
@@ -134,7 +136,7 @@ def report_unique_id_status(report_unique_id):
 def bike_lane_details():
 
     if request.method == 'GET':
-        return render_template('someone-is-parked-in-a-bike-lane/details.html')
+        return render_template('someone-is-parked-in-a-bike-lane/details.html', company_list = jsonhandler.company_list())
 
     if request.method == 'POST':
         # Get input from forms and put into vars

@@ -32,8 +32,9 @@
 				<div class="form-group">
 					<label for="company-name">Company</label>
 					<select name="company-name" id="company-name" class="custom-select" required>
-						<option value="Bad Courier PLC">Bad Courier PLC</option>
-						<option value="Bad Trucking PLC">Bad Trucking Company</option>
+						{% for row in company_list|sort %}
+						<option value="{{row}}">{{row}}</option>
+						{% endfor %}
 						<option value="Not listed">Not listed</option>
 					</select>
 				</div>

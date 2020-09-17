@@ -1,11 +1,15 @@
 {
-  "Example plc": {
+  "DPD": {
       "contact_method": "email",
-      "email_address": "email@email.com"
+      "email_address": "makeitright@dpd.co.uk"
   },
-  "Another Example LTD": {
+  "Hermes": {
       "contact_method": "email",
-      "email_address": "email@adifferentemail.com"
+      "email_address": "hermessupport@myhermes.co.uk"
+  },
+  "Aardvark": {
+      "contact_method": "email",
+      "email_address": "hermessupport@myhermes.co.uk"
   }
 }
 
