@@ -9,6 +9,8 @@ import secretstuff
 
 import jsonhandler
 
+from datetime import datetime
+
 
 # Define flask variables
 UPLOAD_FOLDER = 'static/uploads'
@@ -163,7 +165,8 @@ def bike_lane_details():
             registration_number = registration_number,
             vehicle_colour = vehicle_colour,
             vehicle_brand = vehicle_brand,
-            details_body = details_body
+            details_body = details_body,
+            timestamp = datetime.utcnow()
         )
 
         db.session.add(new_report)
