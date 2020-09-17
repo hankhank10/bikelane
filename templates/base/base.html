@@ -12,10 +12,11 @@
 
 <div class="container">
 	<nav class="navbar navbar-light bg-light">
-		<a class="navbar-brand" href="#">
-			<span class="navbar-brand mb-0 h1">bikelane.app</span>
+		<a class="navbar-brand" href="{{url_for('index')}}">
+			<span class="navbar-brand mb-0 h1"><i class="fas fa-biking"></i> bikelane.app</span>
 		</a>
 	</nav>
+	<br>
 
 	{% block content %}{% endblock %}
 
