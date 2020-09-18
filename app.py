@@ -149,6 +149,7 @@ def bike_lane_details():
         vehicle_colour = request.form.get('vehicle-colour')
         vehicle_brand = request.form.get('vehicle-brand')
         details_body = request.form.get('details-body')
+        when_did_this_happen = request.form.get('when-did-this-happen')
 
         # Do some basic error checking, proceed if all ok
         if company_name is None or registration_number is None:
@@ -195,6 +196,7 @@ def bike_lane_where(report_unique_id):
         council_name = request.form.get('council-name')
         latitude = request.form.get('latitude')
         longitude = request.form.get('longitude')
+
 
         # Check basic details provided
         if road_name is None or city_name is None:
