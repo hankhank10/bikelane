@@ -61,7 +61,7 @@ class Report(db.Model):
         return website_url + "report/" + self.report_unique_id
 
 
-# Functions to actually deal with uploading and serving images
+# START: UPLOAD AND SERVE IMAGES
 
 @app.route('/upload_file/to/<report_unique_id>', methods=['POST'])
 def upload_file(report_unique_id = None):
@@ -111,6 +111,8 @@ def allowed_file(filename):
 @app.route('/view_image/<filename>')
 def view_image(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+# END: UPLOAD AND SERVE IMAGES
 
 
 # Above my pay grade...
@@ -217,7 +219,7 @@ def bike_lane_where(report_unique_id):
 
         db.session.commit()
 
-        return redirect(url_for('bike_lane_photos'))
+        return redirect(url_for('bike_lane_photos', report_unique_id=report_unique_id))
 
 
 @app.route('/someone-is-parked-in-a-bike-lane/photos/<report_unique_id>', methods=['GET', 'POST'])
@@ -233,7 +235,8 @@ def bike_lane_photos(report_unique_id):
         return render_template('generic/upload-photos.html')
 
     if request.method == 'POST':
-        return "POST?"  ##START HERE TOMORROW
+        # This will only be allowed if photos have been uploaded - checked clinet side
+        return redirect(url_for('submit_report', report_unique_id))
 
 # END: BIKE LANE ENDPOINTS
 
