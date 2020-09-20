@@ -14,6 +14,8 @@
 	<nav class="navbar navbar-light bg-light">
 		<a class="navbar-brand" href="{{url_for('index')}}">
 			<span class="navbar-brand mb-0 h1"><i class="fas fa-biking"></i> bikelane.app</span>
+
+            <span><a data-toggle="tooltip" data-placement="left" title="This app is open source and free to use; it is cheap (although not free) to run. If you want to buy me a coffee / beer / some server hosting because you find the service valuable then please do." href="https://www.buymeacoffee.com/hankhank10"><img class="rounded" src="static/images/buymeacoffee.png" style="height: 40px"</a></span>
 		</a>
 	</nav>
 	<br>
@@ -27,5 +29,12 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+<script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
 </body>
 </html>
