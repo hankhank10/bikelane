@@ -1,5 +1,5 @@
 import os
-from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template
+from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, send_file
 import secrets
 from pathlib import Path
 
@@ -16,6 +16,7 @@ from datetime import datetime
 
 # Define flask variables
 UPLOAD_FOLDER = 'static/uploads'
+ZIP_FOLDER = 'static/zips'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
@@ -38,7 +39,7 @@ class Image(db.Model):
     report_unique_id = db.Column(db.Integer)
 
     def image_url(self):
-        return website_url + "static/uploads/" + self.image_filename
+        return website_url + UPLOAD_FOLDER + "/" + self.image_filename
 
 
 class Report(db.Model):
@@ -132,13 +133,33 @@ def create_zip(report_unique_id):
         print(file_name)
 
     # writing files to a zipfile
-    with ZipFile('/static/zips/'+report_unique_id+ '.zip', 'w') as zip:
+    with ZipFile(UPLOAD_FOLDER + "/" + report_unique_id + '.zip', 'w') as zip:
         # writing each file one by one
         for file in file_paths:
-            zip.write(file)
+            zip.write(UPLOAD_FOLDER + "/" + file, file)
 
     print("All files zipped successfully!")
     return "success"
+
+
+@app.route('/zip/<report_unique_id>')
+def serve_zip(report_unique_id):
+
+    # Check the unique_id provided is valid, return error if not
+    report_status = report_unique_id_status(report_unique_id)
+    if report_status != "valid":
+        print(report_status)
+        return report_status
+
+    # Create the zip file
+    zip_result = create_zip(report_unique_id)
+
+    if zip_result != "success":
+        return "Error creating zip file"
+
+    # Serve the zip file
+    return send_file(UPLOAD_FOLDER + "/" + report_unique_id + '.zip')
+
 
 # END: UPLOAD AND SERVE IMAGES
 

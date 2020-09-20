@@ -23,3 +23,4 @@ actions/.DS_Store
 *.xml
 .DS_Store
 migrations/versions/fbf4ae41a6f3_.py
+static/uploads/cee80f970b.zip

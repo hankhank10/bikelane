@@ -107,20 +107,20 @@
 
                      <div class="row">
                          {% for row in images %}
-                          <div class="col-md-6">
+                          <div class="col-md-3 mb-5">
                                 <div class="thumbnail">
                                     <a href="{{ row.image_url() }}" download="{{ row.image_filename }}">
-                                    <img src="{{ row.image_url() }}" alt="" style="width:100%">
-                                    <div class="caption">
-                                        <p><i class="fas fa-download"></i> Download</p>
-                                    </div>
+                                    <img src="{{ row.image_url() }}" alt="" style="min-height:50px; height:100px;"">
                                     </a>
                                 </div>
                           </div>
                          {% endfor %}
                      </div>
-
                 </div>
+                <div class="card-footer">
+                    <a class="btn btn-primary" href="{{ url_for('serve_zip', report_unique_id=report.report_unique_id) }}" role="button"><i class="fas fa-file-archive"></i> Download ZIP file</a>
+                </div>
+
             </div>
             {% endif %}
 
