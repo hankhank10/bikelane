@@ -109,8 +109,8 @@
                          {% for row in images %}
                           <div class="col-md-6">
                                 <div class="thumbnail">
-                                    <a href="{{ row.image_url }}" download="{{ row.image_filename }}">
-                                    <img src="{{ row.image_url }}" alt="" style="width:100%">
+                                    <a href="{{ row.image_url() }}" download="{{ row.image_filename }}">
+                                    <img src="{{ row.image_url() }}" alt="" style="width:100%">
                                     <div class="caption">
                                         <p><i class="fas fa-download"></i> Download</p>
                                     </div>

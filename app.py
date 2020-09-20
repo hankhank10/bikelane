@@ -19,7 +19,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = secretstuff.secret_key
-website_url = "http://localhost:5000/"
+website_url = "http://localhost:5008/"
 
 # DB initialisation
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -36,7 +36,7 @@ class Image(db.Model):
     report_unique_id = db.Column(db.Integer)
 
     def image_url(self):
-        return website_url + "/static/uploads/" + self.image_filename
+        return website_url + "static/uploads/" + self.image_filename
 
 
 class Report(db.Model):
