@@ -36,7 +36,7 @@ class Image(db.Model):
     report_unique_id = db.Column(db.Integer)
 
     def image_url(self):
-        return website_url + "static/uploads/" + self.image_filename
+        return website_url + "/static/uploads/" + self.image_filename
 
 
 class Report(db.Model):

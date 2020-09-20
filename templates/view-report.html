@@ -4,9 +4,6 @@
 <div class="container" style="align-content: center">
 
 	<div class="card text-left">
-
-
-
 		<div class="card-body">
 			<h1 class="card-title text-center">{{ report.reason_for_report }}</h1><br>
 
@@ -24,6 +21,14 @@
                         <td>When did this happen:</td>
                         <td>{{ report.when_did_this_happen }}</td>
                     </tr>
+
+                    {% if report.details_body %}
+                    <tr>
+                        <td>Additional details:</td>
+                        <td>{{ report.details_body }}</td>
+                    </tr>
+                    {% endif %}
+
                     <tr>
                         <td></td>
                         <td></td>
@@ -55,7 +60,7 @@
                         <td>Company name:</td>
                         <td>{{ report.company_name }}</td>
                     </tr>
-                    
+
                     <tr>
                         <td></td>
                         <td></td>
@@ -82,7 +87,7 @@
                     </tr>
                     {% endif %}
 
-                    {% if report.council_area %}
+                    {% if report.council_name %}
                     <tr>
                         <td>Council area:</td>
                         <td>{{ report.council_name }}</td>
@@ -91,6 +96,33 @@
                 </tbody>
             </table>
 
+            <br>
+
+            {% if images|length > 0 %}
+            <div class="card text-left">
+                <div class="card-header">
+                    Photos
+                </div>
+                <div class="card-body">
+
+                     <div class="row">
+                         {% for row in images %}
+                          <div class="col-md-6">
+                                <div class="thumbnail">
+                                    <a href="{{ image.image_url }}" download="{{ image.image_filename }}">
+                                    <img src="{{ image.image_url }}" alt="" style="width:100%">
+                                    <div class="caption">
+                                        <p><i class="fas fa-download"></i> Download</p>
+                                    </div>
+                                    </a>
+                                </div>
+                          </div>
+                         {% endfor %}
+                     </div>
+
+                </div>
+            </div>
+            {% endif %}
 
 
 		</div>
