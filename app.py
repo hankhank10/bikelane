@@ -111,11 +111,6 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/view_image/<filename>')
-def view_image(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
-
 def create_zip(report_unique_id):
 
     # Check the unique_id provided is valid, return error if not
