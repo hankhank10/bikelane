@@ -14,9 +14,6 @@ migrations/README
 migrations/script.py.mako
 migrations/versions/4772dea54f84_.py
 migrations/versions/__pycache__/4772dea54f84_.cpython-38.pyc
-static/uploads/72b4524aaad415479f81de8f9c07a49f.png
-static/uploads/dd3c0f57b9a28afc766c2ada493a2818.png
-*.png
 *.pyc
 db.sqlite
 actions/.DS_Store
@@ -24,3 +21,15 @@ actions/.DS_Store
 .DS_Store
 migrations/versions/fbf4ae41a6f3_.py
 static/uploads/cee80f970b.zip
+static/uploads/07a2ced34b1b14c5afa9e3042a977c7e.png
+static/uploads/21b6372123cc6dd0ce41232a501ece7d.png
+static/uploads/4c0ee976f25893e82fd63b608ee54470.png
+static/uploads/53f7537762994e58843c014e72ed9ba0.png
+static/uploads/5ee5ae53bf8be5a7439b15f98010875a.png
+static/uploads/6bcd2f1f735308d2b475d8ae55b8f401.png
+static/uploads/6c780ad78191c6895de008f419f3ba76.png
+static/uploads/72b4524aaad415479f81de8f9c07a49f.png
+static/uploads/89029a60f48b217d4ffe6453cde36d7e.png
+static/uploads/adfa2f3cd8606921ca38eb2480db7c6b.png
+static/uploads/dc4b93af9be3d94ac1de0e120fd149b0.png
+static/uploads/dd3c0f57b9a28afc766c2ada493a2818.png
