@@ -2,7 +2,7 @@
 
 It's really annoying when people park in bike lanes. It's dangerous too. People should stop doing it.
 
-[https://bikelane.app/(bikelane.app) is a way of reporting when inconsiderate drivers park in bikelanes in a structured and easy way. Put in a few basic details, upload a few quick photos and it will generate you a ready-to-go email with all the details to send to the company that owns the vehicle.
+[https://bikelane.app/](bikelane.app) is a way of reporting when inconsiderate drivers park in bikelanes in a structured and easy way. Put in a few basic details, upload a few quick photos and it will generate you a ready-to-go email with all the details to send to the company that owns the vehicle.
 
 It can also send a tweet to the company telling them how important it is that their drivers don't park in bike lanes.
 
@@ -38,4 +38,4 @@ Awesome. Fork this repo and get going on improving the ui, designing a nice logo
 
 This service is free to use. It is also not very expensive - but also not free - to run.  If you do want to buy me a coffee, a beer or some hosting then you can buy me a coffee:
 
-<a href="https://www.buymeacoffee.com/hankhank10"><img class="rounded" src="/static/images/buymeacoffee.png" style="height: 40px"</a>
+<a href="https://www.buymeacoffee.com/hankhank10">![]("/static/images/buymeacoffee.png")</a>
