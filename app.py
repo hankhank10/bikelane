@@ -102,7 +102,7 @@ def upload_file(report_unique_id = None):
         db.session.add(new_image)
         db.session.commit()
 
-        print ("File uploaded!")
+        print ("File uploaded as", filename)
 
         return filename
 
@@ -127,10 +127,6 @@ def create_zip(report_unique_id):
     for image in images:
         file_paths.append(image.image_filename)
 
-    # printing the list of all files to be zipped
-    print('Following files will be zipped:')
-    for file_name in file_paths:
-        print(file_name)
 
     # writing files to a zipfile
     with ZipFile(UPLOAD_FOLDER + "/" + report_unique_id + '.zip', 'w') as zip:
@@ -138,7 +134,6 @@ def create_zip(report_unique_id):
         for file in file_paths:
             zip.write(UPLOAD_FOLDER + "/" + file, file)
 
-    print("All files zipped successfully!")
     return "success"
 
 
@@ -148,7 +143,6 @@ def serve_zip(report_unique_id):
     # Check the unique_id provided is valid, return error if not
     report_status = report_unique_id_status(report_unique_id)
     if report_status != "valid":
-        print(report_status)
         return report_status
 
     # Create the zip file
