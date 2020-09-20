@@ -38,4 +38,4 @@ Awesome. Fork this repo and get going on improving the ui, designing a nice logo
 
 This service is free to use. It is also not very expensive - but also not free - to run.  If you do want to buy me a coffee, a beer or some hosting then you can buy me a coffee:
 
-<a href="https://www.buymeacoffee.com/hankhank10">![](https://github.com/hankhank10/bikelane/blob/master/static/images/buymeacoffee.png)</a>
+<a href="https://www.buymeacoffee.com/hankhank10"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
