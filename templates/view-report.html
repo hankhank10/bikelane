@@ -1,0 +1,99 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="container" style="align-content: center">
+
+	<div class="card text-left">
+
+
+
+		<div class="card-body">
+			<h1 class="card-title text-center">{{ report.reason_for_report }}</h1><br>
+
+            <table class="table table-hover">
+                <tbody>
+                    <tr class="table-secondary">
+                        <td>Details</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Date of report:</td>
+                        <td>{{ report.timestamp.strftime('%H:%M on %d-%b-%Y') }}</td>
+                    </tr>
+                    <tr>
+                        <td>When did this happen:</td>
+                        <td>{{ report.when_did_this_happen }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="table-secondary">
+                        <td>Vehicle</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Registration:</td>
+                        <td>{{ report.registration_number }}</td>
+                    </tr>
+
+                    {% if report.vehicle_colour %}
+                    <tr>
+                        <td>Colour:</td>
+                        <td>{{ report.vehicle_colour }}</td>
+                    </tr>
+                    {% endif %}
+
+                    {% if report.vehicle_brand %}
+                    <tr>
+                        <td>Make & model:</td>
+                        <td>{{ report.vehicle_brand }}</td>
+                    </tr>
+                    {% endif %}
+
+                    <tr>
+                        <td>Company name:</td>
+                        <td>{{ report.company_name }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="table-secondary">
+                        <td>Location</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Road name:</td>
+                        <td>{{ report.location_city_name }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>City:</td>
+                        <td>{{ report.location_city_name }}</td>
+                    </tr>
+
+                    {% if report.location_postcode %}
+                    <tr>
+                        <td>Postcode:</td>
+                        <td>{{ report.location_postcode }}</td>
+                    </tr>
+                    {% endif %}
+
+                    {% if report.council_area %}
+                    <tr>
+                        <td>Council area:</td>
+                        <td>{{ report.council_name }}</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+
+
+		</div>
+	</div>
+
+{% endblock %}

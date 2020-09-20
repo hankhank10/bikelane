@@ -169,7 +169,8 @@ def bike_lane_details():
             vehicle_colour = vehicle_colour,
             vehicle_brand = vehicle_brand,
             details_body = details_body,
-            timestamp = datetime.utcnow()
+            timestamp = datetime.utcnow(),
+            when_did_this_happen = when_did_this_happen
         )
 
         db.session.add(new_report)
@@ -238,8 +239,30 @@ def bike_lane_photos(report_unique_id):
         # This will only be allowed if photos have been uploaded - checked clinet side
         return redirect(url_for('submit_report', report_unique_id))
 
+
 # END: BIKE LANE ENDPOINTS
 
+
+# START: VIEW REPORTS
+
+@app.route('/view/<report_unique_id>')
+def view_report(report_unique_id):
+
+    # Check the unique_id provided is valid, return error if not
+    report_status = report_unique_id_status(report_unique_id)
+    if report_status != "valid":
+        flash(report_status)
+        return report_status
+
+    # Load the report and the photos from the DB
+    report = Report.query.filter_by(report_unique_id=report_unique_id).first()
+    images = Image.query.filter_by(report_unique_id=report_unique_id).all()
+
+    # Show the report
+    return render_template('view-report.html', report=report, images=images)
+
+
+# END: VIEW REPORTS
 
 # The main event...
 
