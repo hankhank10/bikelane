@@ -68,13 +68,14 @@ def upload_file(report_unique_id = None):
 
     # check if report ID provided
     if report_unique_id is None:
+        print ("No associated report ID")
         flash ("No associated report ID")
-        return redirect(request.url)
+        return "No associated report ID"
 
     # check if the post request has a file
     if 'file' not in request.files:
         flash('No file part')
-        return redirect(request.url)
+        return "No file part"
 
     file = request.files['file']
 
@@ -142,7 +143,9 @@ def report_unique_id_status(report_unique_id):
 def bike_lane_details():
 
     if request.method == 'GET':
-        return render_template('someone-is-parked-in-a-bike-lane/details.html', company_list = jsonhandler.company_list())
+        return render_template('someone-is-parked-in-a-bike-lane/details.html',
+                               report_unique_id = report_unique_id,
+                               company_list = jsonhandler.company_list())
 
     if request.method == 'POST':
         # Get input from forms and put into vars
@@ -189,7 +192,8 @@ def bike_lane_where(report_unique_id):
         return report_status
 
     if request.method == 'GET':
-        return render_template('someone-is-parked-in-a-bike-lane/where.html', report_unique_id=report_unique_id)
+        return render_template('someone-is-parked-in-a-bike-lane/where.html',
+                               report_unique_id=report_unique_id)
 
     if request.method == 'POST':
         # Get the data from the form
@@ -233,7 +237,7 @@ def bike_lane_photos(report_unique_id):
         return report_status
 
     if request.method == 'GET':
-        return render_template('generic/upload-photos.html')
+        return render_template('generic/upload-photos.html', report_unique_id = report_unique_id)
 
     if request.method == 'POST':
         # This will only be allowed if photos have been uploaded - checked clinet side
