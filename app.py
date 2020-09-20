@@ -185,7 +185,6 @@ def bike_lane_details():
 
     if request.method == 'GET':
         return render_template('someone-is-parked-in-a-bike-lane/details.html',
-                               report_unique_id = report_unique_id,
                                company_list = jsonhandler.company_list())
 
     if request.method == 'POST':
@@ -203,6 +202,14 @@ def bike_lane_details():
             return redirect(request.url)
 
         # Create new record
+
+        # Find a unique report ID
+        id_is_unique = False
+        while id_is_unique is False:
+            report_unique_id = secrets.token_hex(5)
+            if Report.query.filter_by(report_unique_id=report_unique_id).count() == 0:
+                id_is_unique = True
+
         report_unique_id = secrets.token_hex(5)
         new_report = Report(
             # id is set automatically
