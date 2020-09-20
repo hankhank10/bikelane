@@ -7,6 +7,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import secretstuff
 
+from zipfile import ZipFile
+
 import jsonhandler
 
 from datetime import datetime
@@ -113,6 +115,36 @@ def allowed_file(filename):
 def view_image(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+
+def create_zip(report_unique_id):
+
+    # Check the unique_id provided is valid, return error if not
+    report_status = report_unique_id_status(report_unique_id)
+    if report_status != "valid":
+        print(report_status)
+        return report_status
+
+    # Load the the photos from the DB
+    images = Image.query.filter_by(report_unique_id=report_unique_id).all()
+
+    file_paths = []
+    for image in images:
+        file_paths.append(image.image_filename)
+
+    # printing the list of all files to be zipped
+    print('Following files will be zipped:')
+    for file_name in file_paths:
+        print(file_name)
+
+    # writing files to a zipfile
+    with ZipFile('/static/zips/'+report_unique_id+ '.zip', 'w') as zip:
+        # writing each file one by one
+        for file in file_paths:
+            zip.write(file)
+
+    print("All files zipped successfully!")
+    return "success"
+
 # END: UPLOAD AND SERVE IMAGES
 
 
@@ -125,7 +157,6 @@ def someone_is_in_danger():
 # Helper functions (DRY, amirite?)
 
 def report_unique_id_status(report_unique_id):
-
     # Check it is not None
     if report_unique_id is None:
         return ("No unique report ID provided")
