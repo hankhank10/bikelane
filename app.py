@@ -128,7 +128,7 @@ def create_zip(report_unique_id):
         print(report_status)
         return report_status
 
-    # Load the report (we dont actually need this now, but might later)
+    # Load the report (we dont actually need this now, but might later if we want to add proper file names)
     #report = Report.query.filter_by(report_unique_id=report_unique_id).first()
 
     # Load the the photos from the DB
@@ -137,7 +137,6 @@ def create_zip(report_unique_id):
     file_paths = []
     for image in images:
         file_paths.append(image.image_filename)
-
 
     # writing files to a zipfile
     with ZipFile(UPLOAD_FOLDER + "/" + report_unique_id + '.zip', 'w') as zip:
