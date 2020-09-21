@@ -306,6 +306,20 @@ def report_photos(report_unique_id):
         # This will only be allowed if photos have been uploaded - checked clinet side
         return redirect(url_for('submit_report', report_unique_id))
 
+
+@app.route ('/report/<report_unique_id>/submit')
+def report_submit(report_unique_id):
+
+    # Check the unique_id provided is valid, return error if not
+    report_status = report_unique_id_status(report_unique_id)
+    if report_status != "valid":
+        flash (report_status)
+        return report_status
+
+    return "ok"
+
+
+
 # END: BIKE LANE ENDPOINTS
 
 
