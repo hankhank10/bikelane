@@ -24,3 +24,4 @@ migrations/versions/fbf4ae41a6f3_.py
 *.zip
 static/uploads/*
 static/zip/*
+secretstuff.py
