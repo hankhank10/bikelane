@@ -317,8 +317,15 @@ def report_submit(report_unique_id):
         flash (report_status, "error")
         return redirect(request.referrer)
 
-    return "ok"
+    # Get the report
+    report = Report.query.filter_by(report_unique_id=report_unique_id).first()
 
+    # Populate the details of the email
+    email_subject = "Parking in a bike lane"
+    email_message = generate_message(report_unique_id, "email")
+    email_to = jsonhandler.company_details(report.company_name)['email_address']
+    
+    return render_template('generic/submit.html')
 
 
 # END: BIKE LANE ENDPOINTS
@@ -340,6 +347,23 @@ def view_report(report_unique_id):
     # Show the report
     return render_template('view-report.html', report=report, images=images)
 
+
+
+def generate_message(report_unique_id, message_destination="email"):
+    # Check the unique_id provided is valid, return error if not
+    report_status = report_unique_id_status(report_unique_id)
+    if report_status != "valid":
+        return "error"
+
+    report = Report.query.filter_by(report_unique_id=report_unique_id).first()
+
+    # Bike lane events
+    if report.reason_for_report == "Parking in a bike lane":
+
+        if message_destination == "email":
+            generated_message = render_template(render_template('messages/email/bikelane.j2', report=report))
+
+    return generated_message
 
 # The main event...
 
