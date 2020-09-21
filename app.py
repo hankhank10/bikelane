@@ -212,7 +212,7 @@ def report_details(report_what):
 
         # Do some basic error checking, proceed if all ok
         if company_name is None or registration_number is None:
-            flash ("You need to provide basic details")
+            flash ("You need to provide basic details", "error")
             return redirect(request.url)
 
         # Find a unique report ID
@@ -251,7 +251,7 @@ def report_where(report_unique_id):
     # Check the unique_id provided is valid, return error if not
     report_status = report_unique_id_status(report_unique_id)
     if report_status != "valid":
-        flash (report_status)
+        flash (report_status, "error")
         return report_status
 
     if request.method == 'GET':
@@ -270,7 +270,7 @@ def report_where(report_unique_id):
 
         # Check basic details provided
         if road_name is None or city_name is None:
-            flash("You need to provide basic details")
+            flash("You need to provide basic details", "error")
             return redirect(request.url)
 
         # Load the report from the DB
@@ -296,7 +296,7 @@ def report_photos(report_unique_id):
     # Check the unique_id provided is valid, return error if not
     report_status = report_unique_id_status(report_unique_id)
     if report_status != "valid":
-        flash (report_status)
+        flash (report_status, "error")
         return report_status
 
     if request.method == 'GET':
@@ -313,7 +313,7 @@ def report_submit(report_unique_id):
     # Check the unique_id provided is valid, return error if not
     report_status = report_unique_id_status(report_unique_id)
     if report_status != "valid":
-        flash (report_status)
+        flash (report_status, "error")
         return report_status
 
     return "ok"
@@ -329,7 +329,7 @@ def view_report(report_unique_id):
     # Check the unique_id provided is valid, return error if not
     report_status = report_unique_id_status(report_unique_id)
     if report_status != "valid":
-        flash(report_status)
+        flash(report_status, "error")
         return report_status
 
     # Load the report and the photos from the DB
