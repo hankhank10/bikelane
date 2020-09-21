@@ -194,7 +194,8 @@ def report_details(report_what):
 
     if report_what not in list_of_things_that_can_be_reported:
             print (report_what)
-            return report_what
+            flash ("That is not on the list of things that can be reported", "error")
+            return redirect(request.referrer)
 
     if request.method == 'GET':
         return render_template('generic/details.html',
@@ -213,7 +214,7 @@ def report_details(report_what):
         # Do some basic error checking, proceed if all ok
         if company_name is None or registration_number is None:
             flash ("You need to provide basic details", "error")
-            return redirect(request.url)
+            return redirect(request.referrer)
 
         # Find a unique report ID
         id_is_unique = False
@@ -252,7 +253,7 @@ def report_where(report_unique_id):
     report_status = report_unique_id_status(report_unique_id)
     if report_status != "valid":
         flash (report_status, "error")
-        return report_status
+        return redirect(request.referrer)
 
     if request.method == 'GET':
         return render_template('generic/where.html',
@@ -271,7 +272,7 @@ def report_where(report_unique_id):
         # Check basic details provided
         if road_name is None or city_name is None:
             flash("You need to provide basic details", "error")
-            return redirect(request.url)
+            return redirect(request.referrer)
 
         # Load the report from the DB
         report = Report.query.filter_by(report_unique_id=report_unique_id).first()
@@ -297,7 +298,7 @@ def report_photos(report_unique_id):
     report_status = report_unique_id_status(report_unique_id)
     if report_status != "valid":
         flash (report_status, "error")
-        return report_status
+        return redirect(request.referrer)
 
     if request.method == 'GET':
         return render_template('generic/upload-photos.html', report_unique_id = report_unique_id)
@@ -314,7 +315,7 @@ def report_submit(report_unique_id):
     report_status = report_unique_id_status(report_unique_id)
     if report_status != "valid":
         flash (report_status, "error")
-        return report_status
+        return redirect(request.referrer)
 
     return "ok"
 
@@ -330,7 +331,7 @@ def view_report(report_unique_id):
     report_status = report_unique_id_status(report_unique_id)
     if report_status != "valid":
         flash(report_status, "error")
-        return report_status
+        return redirect(request.referrer)
 
     # Load the report and the photos from the DB
     report = Report.query.filter_by(report_unique_id=report_unique_id).first()
