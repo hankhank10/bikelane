@@ -22,7 +22,12 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = secretstuff.secret_key
-website_url = "http://localhost:5008/"
+
+# Toggle this based on whether running locally or on the server
+where_running = "server"
+if where_running == "local": website_url = "http://localhost:5008/"
+if where_running == "server": website_url = "https://bikelane.app/"
+
 
 # DB initialisation
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -155,7 +160,7 @@ def serve_zip(report_unique_id):
         return "Error creating zip file"
 
     # Serve the zip file
-    return send_file(UPLOAD_FOLDER + "/" + report_unique_id + '.zip')
+    return send_file(ZIP_FOLDER + "/" + report_unique_id + '.zip')
 
 
 # END: UPLOAD AND SERVE IMAGES
