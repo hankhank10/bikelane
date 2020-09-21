@@ -11,7 +11,7 @@
 					<a class="nav-link disabled" href="#">Issue?</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link active" href="#">Details?</a>
+					<a class="nav-link disabled" href="#">Details?</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link disabled" href="#">Where?</a>
@@ -20,16 +20,18 @@
 					<a class="nav-link disabled" href="#">Photos?</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link disabled" href="#">Submit</a>
+					<a class="nav-link active" href="#">Submit</a>
 				</li>
 			</ul>
 		</div>
 
 		<div class="card-body">
-			<h2 class="card-title text-center mt-2 mb-5">That sucks. Let's do something about it.</h2>
+			<h2 class="card-title text-center mt-2 mb-5">Ok, let them know</h2>
 
+			<a class="btn btn-primary btn-lg btn-block" href="mailto:{{mailto_link}}" role="button"><i class="fas fa-envelope"></i> Send the company an email</a>
+
+			<a href="mailto:{{mailto_link}}">Send email</a>
 			
-
 		</div>
 	</div>
 

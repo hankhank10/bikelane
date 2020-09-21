@@ -1,0 +1,30 @@
+Hi, I wanted to let you know that I spotted one of your vehicles with Registration number {{report.registration_number}} {{reason_for_email}}.
+
+I know that drivers have a challenging job, but I'm sure you also know how dangerous {{gerund_reason}} is for cyclists.  I wanted to make you aware so that you could offer the drvier some retraining on this.
+
+I've included all the details below, or if it's easier then you can click on this link which will bring up all the information and the {{report.number_of_images()}} pictures I took of this in your browser: {{report.report_unique_url()}}
+
+Vehicle details: 
+Registration: {{report.registration_number}}
+{% if report.vehicle_colour %}Vehicle colour: {{report.vehicle_colour}}{% endif %}
+{% if report.vehicle_colour %}Vehicle brand: {{report.vehicle_colour}}{% endif %}
+
+Event details:
+Submitted at: {{ report.timestamp.strftime('%H:%M on %d-%b-%Y') }}
+When did this happen: {{ report.when_did_this_happen }}
+Additional details: {{ report.details_body }}
+
+Location details:
+Road name: {{report.location_road_name}}
+City: {{ report.location_city_name }}
+{% if report.postcode %}Postcode: {{report.location_postcode}}{% endif %}
+{% if report.council_name %}Council name: {{report.location_council_name}}{% endif %}
+
+Photos:
+You can download a zip file of the photos I took here: {{report.zip_url()}}
+
+Reminder that you can view all of this information in a user friendly way at: {{report.report_unique_url()}}
+
+This notification was sent to you by a real person using https://bikelane.app/
+
+Thank you!

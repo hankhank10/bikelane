@@ -71,6 +71,13 @@ class Report(db.Model):
     def report_unique_url(self):
         return website_url + "report/" + self.report_unique_id
 
+    def zip_url(self):
+        return website_url + "zips/" + self.report_unique_id
+
+    def number_of_images(self):
+        how_many = Image.query.filter_by(report_unique_id=self.report_unique_id).count()
+        return how_many
+
 
 # START: UPLOAD AND SERVE IMAGES
 
@@ -139,9 +146,10 @@ def create_zip(report_unique_id):
         file_paths.append(image.image_filename)
 
     # writing files to a zipfile
-    with ZipFile(UPLOAD_FOLDER + "/" + report_unique_id + '.zip', 'w') as zip:
+    with ZipFile(ZIP_FOLDER + "/" + report_unique_id + '.zip', 'w') as zip:
         # writing each file one by one
         for file in file_paths:
+            print (file)
             zip.write(UPLOAD_FOLDER + "/" + file, file)
 
     return "success"
@@ -305,7 +313,7 @@ def report_photos(report_unique_id):
 
     if request.method == 'POST':
         # This will only be allowed if photos have been uploaded - checked clinet side
-        return redirect(url_for('submit_report', report_unique_id))
+        return redirect(url_for('report_submit', report_unique_id=report_unique_id))
 
 
 @app.route ('/report/<report_unique_id>/submit')
@@ -322,11 +330,34 @@ def report_submit(report_unique_id):
 
     # Populate the details of the email
     email_subject = "Parking in a bike lane"
-    email_message = generate_message(report_unique_id, "email")
+    email_body = generate_message(report_unique_id, "email")
+    email_body = email_body.replace("\n", "%0D%0A")
     email_to = jsonhandler.company_details(report.company_name)['email_address']
-    
-    return render_template('generic/submit.html')
 
+    # Generate the mailto link
+    mailto_link = "mailto:" + email_to
+    mailto_link = mailto_link + "?subject=" + email_subject
+    mailto_link = mailto_link + "&body=" + email_body
+    
+    print (email_body)
+    return render_template('generic/submit.html', report=report, mailto_link=mailto_link)
+
+
+def generate_message(report_unique_id, message_destination="email"):
+    # Check the unique_id provided is valid, return error if not
+    report_status = report_unique_id_status(report_unique_id)
+    if report_status != "valid":
+        return "error"
+
+    report = Report.query.filter_by(report_unique_id=report_unique_id).first()
+
+    # Bike lane events
+    if report.reason_for_report == "Parking in a bike lane":
+
+        if message_destination == "email":
+            generated_message = render_template('messages/email/email.j2', report=report, reason_for_email="parked in a bike lane", gerund_reason="parking in a bike lane")
+
+    return generated_message
 
 # END: BIKE LANE ENDPOINTS
 
@@ -349,21 +380,6 @@ def view_report(report_unique_id):
 
 
 
-def generate_message(report_unique_id, message_destination="email"):
-    # Check the unique_id provided is valid, return error if not
-    report_status = report_unique_id_status(report_unique_id)
-    if report_status != "valid":
-        return "error"
-
-    report = Report.query.filter_by(report_unique_id=report_unique_id).first()
-
-    # Bike lane events
-    if report.reason_for_report == "Parking in a bike lane":
-
-        if message_destination == "email":
-            generated_message = render_template(render_template('messages/email/bikelane.j2', report=report))
-
-    return generated_message
 
 # The main event...
 
