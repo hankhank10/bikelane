@@ -128,6 +128,9 @@ def create_zip(report_unique_id):
         print(report_status)
         return report_status
 
+    # Load the report (we dont actually need this now, but might later)
+    #report = Report.query.filter_by(report_unique_id=report_unique_id).first()
+
     # Load the the photos from the DB
     images = Image.query.filter_by(report_unique_id=report_unique_id).all()
 
