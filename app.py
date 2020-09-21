@@ -32,6 +32,9 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 
+# Things that can be reported
+list_of_things_that_can_be_reported = ['someone-is-parked-in-a-bike-lane']
+
 # Define DB models
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -165,7 +168,6 @@ def someone_is_in_danger():
 
 
 # Helper functions (DRY, amirite?)
-
 def report_unique_id_status(report_unique_id):
     # Check it is not None
     if report_unique_id is None:
@@ -179,13 +181,18 @@ def report_unique_id_status(report_unique_id):
     return "valid"
 
 
-# START: BIKE LANE ENDPOINTS
-@app.route('/someone-is-parked-in-a-bike-lane/details', methods=['GET', 'POST'])
-def bike_lane_details():
+# START: REPORT SOMETHING ENDPOINTS
+@app.route('/report/<report_what>/details', methods=['GET', 'POST'])
+def report_details(report_what):
+
+    if report_what not in list_of_things_that_can_be_reported:
+            print (report_what)
+            return report_what
 
     if request.method == 'GET':
-        return render_template('someone-is-parked-in-a-bike-lane/details.html',
-                               company_list = jsonhandler.company_list())
+        return render_template('generic/details.html',
+                               company_list = jsonhandler.company_list(),
+                               report_what = report_what)
 
     if request.method == 'POST':
         # Get input from forms and put into vars
@@ -201,8 +208,6 @@ def bike_lane_details():
             flash ("You need to provide basic details")
             return redirect(request.url)
 
-        # Create new record
-
         # Find a unique report ID
         id_is_unique = False
         while id_is_unique is False:
@@ -210,11 +215,14 @@ def bike_lane_details():
             if Report.query.filter_by(report_unique_id=report_unique_id).count() == 0:
                 id_is_unique = True
 
-        report_unique_id = secrets.token_hex(5)
+        # Work out what the reason for the report is
+        if report_what == "someone-is-parked-in-a-bike-lane": reason_for_report = "Parking in a bike lane"
+
+        # Actually create the record
         new_report = Report(
             # id is set automatically
             report_unique_id = report_unique_id,
-            reason_for_report = "Parking in a bike lane",
+            reason_for_report = reason_for_report,
             company_name = company_name,
             registration_number = registration_number,
             vehicle_colour = vehicle_colour,
@@ -227,11 +235,11 @@ def bike_lane_details():
         db.session.add(new_report)
         db.session.commit()
 
-        return redirect(url_for('bike_lane_where', report_unique_id=report_unique_id))
+        return redirect(url_for('report_where', report_unique_id=report_unique_id))
 
 
-@app.route('/someone-is-parked-in-a-bike-lane/where/<report_unique_id>', methods=['GET', 'POST'])
-def bike_lane_where(report_unique_id):
+@app.route('/report/<report_unique_id>/where/', methods=['GET', 'POST'])
+def report_where(report_unique_id):
 
     # Check the unique_id provided is valid, return error if not
     report_status = report_unique_id_status(report_unique_id)
@@ -240,7 +248,7 @@ def bike_lane_where(report_unique_id):
         return report_status
 
     if request.method == 'GET':
-        return render_template('someone-is-parked-in-a-bike-lane/where.html',
+        return render_template('generic/where.html',
                                report_unique_id=report_unique_id)
 
     if request.method == 'POST':
@@ -272,11 +280,11 @@ def bike_lane_where(report_unique_id):
 
         db.session.commit()
 
-        return redirect(url_for('bike_lane_photos', report_unique_id=report_unique_id))
+        return redirect(url_for('report_photos', report_unique_id=report_unique_id))
 
 
-@app.route('/someone-is-parked-in-a-bike-lane/photos/<report_unique_id>', methods=['GET', 'POST'])
-def bike_lane_photos(report_unique_id):
+@app.route('/report/<report_unique_id>/photos/', methods=['GET', 'POST'])
+def report_photos(report_unique_id):
 
     # Check the unique_id provided is valid, return error if not
     report_status = report_unique_id_status(report_unique_id)
@@ -291,11 +299,8 @@ def bike_lane_photos(report_unique_id):
         # This will only be allowed if photos have been uploaded - checked clinet side
         return redirect(url_for('submit_report', report_unique_id))
 
-
 # END: BIKE LANE ENDPOINTS
 
-
-# START: VIEW REPORTS
 
 @app.route('/view/<report_unique_id>')
 def view_report(report_unique_id):
@@ -313,8 +318,6 @@ def view_report(report_unique_id):
     # Show the report
     return render_template('view-report.html', report=report, images=images)
 
-
-# END: VIEW REPORTS
 
 # The main event...
 
